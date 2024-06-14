@@ -1,8 +1,5 @@
 name: Test ComfyUI Example Workflows
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 
@@ -10,38 +7,27 @@ on:
 jobs:
   test-default-workflow:
     strategy:
+        fail-fast: false
         matrix:
-          os: [macos, linux]
+          os: [macos]
+          python_version: [3.8, 3.11]
+          torch_version: [12.1]
           include:
             - os: macos
-              runner_label: [self-hosted, m2]
+              runner_label: [self-hosted, dev-runner-yo]
             - os: linux
-              cuda_version: 12.1
               runner_label: [self-hosted, Linux, t4]
+            - os: win
+              runner_label: [self-hosted, win]
     runs-on: ${{ matrix.runner_label }}
     steps:
     - name: Test Default Workflow
-      uses: drip-art/comfy-action@main
+      uses: drip-art/comfy-action@yo-migrate-value-from-comfyui
       with:
         os: ${{ matrix.os }}
         cuda_version: ${{ matrix.cuda_version }}
-        models-json: '{"v1-5-pruned-emaonly.ckpt": {"url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt", "directory": "checkpoints"}}'
-        workflow_name: "default-workflow"
-        workflow_json_path: '.github/workflows/json_examples/workflow_api.json'
-        gcs_bucket_name: 'comfy-ci-results'
+        workflow_filenames: "default.json,lora.json"
         google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
-        output_prefix: 'ComfyUI'
-        timeout: 50
-
-    - name: Test Lora Workflow
-      uses: drip-art/comfy-action@main
-      with:
-        os: ${{ matrix.os }}
-        cuda_version: ${{ matrix.cuda_version }}
-        models-json: '{"v1-5-pruned-emaonly.ckpt": {"url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt", "directory": "checkpoints"}, "epiNoiseoffset_v2.safetensors": {"url": "https://huggingface.co/adhikjoshi/epi_noiseoffset/resolve/main/epiNoiseoffset_v2.safetensors", "directory": "loras"}}'
-        workflow_name: "lora-workflow"
-        workflow_json_path: '.github/workflows/json_examples/workflow_lora_api.json'
-        gcs_bucket_name: 'comfy-ci-results'
-        google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+        comfyui_flags: 
         output_prefix: 'ComfyUI'
         timeout: 50
