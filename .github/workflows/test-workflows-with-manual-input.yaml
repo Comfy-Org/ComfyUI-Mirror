@@ -1,4 +1,4 @@
-name: Test ComfyUI Workflows
+name: Test ComfyUI Workflows Manual
 on:
   workflow_dispatch:
     inputs:
