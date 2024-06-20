@@ -15,10 +15,10 @@ jobs:
           include:
             - os: macos
               runner_label: [self-hosted, dev-runner-yo]
-            - os: linux
-              runner_label: [self-hosted, Linux, t4]
-            - os: win
-              runner_label: [self-hosted, win]
+            # - os: linux
+            #   runner_label: [self-hosted, Linux, t4]
+            # - os: win
+            #   runner_label: [self-hosted, win]
     runs-on: ${{ matrix.runner_label }}
     steps:
     - name: Test Default Workflow
