@@ -11,7 +11,7 @@ jobs:
     runs-on: win
     steps:
     - name: Use ComfyUI GitHub Action
-      uses: drip-art/comfy-action@main
+      uses: comfy-org/comfy-action@main
       with:
         os: windows
         cuda_version: 12.1
