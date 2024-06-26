@@ -1,4 +1,4 @@
-name: Test ComfyUI Example Workflows
+name: (Linux) ComfyUI Integration Tests
 on:
   push:
     branches:
@@ -6,24 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-default-workflow:
-    strategy:
-        fail-fast: false
-        matrix:
-          os: [linux]
-          include:
-          #   - os: macos
-          #     runner_label: [self-hosted, m2]
-            - os: linux
-              cuda_version: 12.1
-              runner_label: [self-hosted, Linux, t4]
-    runs-on: ${{ matrix.runner_label }}
+  test-workflows:
+    runs-on: [self-hosted, Linux, t4] 
     steps:
-    - name: Test Default Workflow
-      uses: comfy-org/comfy-action@rh-featu
+    - name: Test ComfyUI Workflows
+      uses: comfy-org/comfy-action@main
       with:
-        os: ${{ matrix.os }}
-        cuda_version: ${{ matrix.cuda_version }}
+        os: linux
+        cuda_version: 12.1
         models-json: '{"v1-5-pruned-emaonly.ckpt": {"url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt", "directory": "checkpoints"}}'
         workflow_filenames: "default.json"
         gcs_bucket_name: 'comfy-ci-results'
