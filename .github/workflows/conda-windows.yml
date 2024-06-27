@@ -1,0 +1,20 @@
+name: Conda Windows
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+
+jobs:
+  test-action:
+    runs-on: win
+    steps:
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: comfyui
+        auto-activate-base: false
+        auto-update-conda: true
+        miniconda-version: latest
+        
