@@ -3,10 +3,34 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'app/**'
+      - 'input/**'
+      - 'output/**'
+      - 'model/**'
+      - 'notebook/**'
+      - 'script_example/**'
+      - 'tests/**'
+      - 'tests-ui/**'
+      - '.github/**'
+      - '.ci/**'
+      - 'web/**'
   workflow_dispatch:
   pull_request:
     branches:
       - master
+    paths-ignore:
+      - 'app/**'
+      - 'input/**'
+      - 'output/**'
+      - 'model/**'
+      - 'notebook/**'
+      - 'script_example/**'
+      - 'tests/**'
+      - 'tests-ui/**'
+      - '.github/**'
+      - '.ci/**'
+      - 'web/**'
 
 jobs:
   test-workflows:
