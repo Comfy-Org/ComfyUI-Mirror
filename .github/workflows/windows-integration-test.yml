@@ -1,0 +1,25 @@
+name: (Windows) ComfyUI Integration Tests
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-workflows:
+    runs-on: [self-hosted, nvidia, win] 
+    steps:
+    - name: Test ComfyUI Workflows
+      uses: comfy-org/comfy-action@main
+      with:
+        os: windows
+        models-json: '{"v1-5-pruned-emaonly.ckpt": {"url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt", "directory": "checkpoints"}}'
+        workflow_filenames: "default.json"
+        gcs_bucket_name: 'comfy-ci-results'
+        google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+        output_prefix: 'ComfyUI'
+        conda_env_file: '.github/workflows/conda-environments/windows-environment.yml'
+        timeout: 50
