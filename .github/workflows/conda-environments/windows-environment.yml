@@ -12,6 +12,7 @@ dependencies:
   - pytorch-cuda=12.1
   - pip:
     # comfyui requirements
+    - torchsde
     - einops
     - transformers>=4.25.1
     - safetensors>=0.4.2

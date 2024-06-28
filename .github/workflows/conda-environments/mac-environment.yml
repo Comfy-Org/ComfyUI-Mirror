@@ -7,9 +7,10 @@ dependencies:
   - pytorch-nightly::pytorch
   - torchvision
   - torchaudio
+  - pip
   - pip:
-    - pip
     # comfyui requirements
+    - torchsde
     - einops
     - transformers>=4.25.1
     - safetensors>=0.4.2
