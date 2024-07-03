@@ -17,6 +17,10 @@ jobs:
         python_version: [3.11.8, 3.12.2]
         cuda_version: [118, 122]
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Calculate Minor Version
         run: |
           echo "MINOR_VERSION=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)" >> $GITHUB_ENV
@@ -27,6 +31,36 @@ jobs:
             cu${{ matrix.cuda_version }}_python_deps.tar
             update_comfyui_and_python_dependencies.bat
           key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ env.MINOR_VERSION }}
+      
+      - name: Update Windows Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+            echo "@echo off
+            call update_comfyui.bat nopause
+            echo -
+            echo This will try to update pytorch and all python dependencies.
+            echo -
+            echo If you just want to update normally, close this and run update_comfyui.bat instead.
+            echo -
+            pause
+            ..\python_embeded\python.exe -s -m pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r ../ComfyUI/requirements.txt pygit2
+            pause" > update_comfyui_and_python_dependencies.bat
+
+            python -m pip wheel --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r requirements.txt pygit2 -w ./temp_wheel_dir
+            python -m pip install --no-cache-dir ./temp_wheel_dir/*
+            echo installed basic
+            ls -lah temp_wheel_dir
+            mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
+            tar cf cu${{ matrix.cuda_version }}_python_deps.tar cu${{ matrix.cuda_version }}_python_deps
+
+      - uses: actions/cache/save@v3
+        with:
+          path: |
+              cu${{ matrix.cuda_version }}_python_deps.tar
+              update_comfyui_and_python_dependencies.bat
+          key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ env.MINOR_VERSION }}
+        
       - shell: bash
         run: |
           mv cu${{ matrix.cuda_version }}_python_deps.tar ../
@@ -35,11 +69,9 @@ jobs:
           tar xf cu${{ matrix.cuda_version }}_python_deps.tar
           pwd
           ls
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - shell: bash
+      
+      - name: Calculate Minor Version
+        shell: bash
         run: |
           cd ..
           cp -r ComfyUI ComfyUI_copy
