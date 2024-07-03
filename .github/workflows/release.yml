@@ -14,7 +14,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python_version: [3.11.8, 3.12.8]
+        python_version: [3.11.8, 3.12.2]
         cuda_version: [118, 122]
     steps:
       - name: Calculate Minor Version
