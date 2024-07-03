@@ -15,8 +15,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python_version: [3.11.8, 3.12.2]
-        cuda_version: [118, 122]
+        python_version: [3.11.8]
+        cuda_version: [118]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
