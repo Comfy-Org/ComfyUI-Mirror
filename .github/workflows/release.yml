@@ -25,10 +25,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - shell: bash
         run: |
           echo "@echo off
@@ -49,14 +45,20 @@ jobs:
           #mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
           #mv cu${{ matrix.cuda_version }}_python_deps ../
           #mv update_comfyui_and_python_dependencies.bat ../
-          cd ..
           pwd
           ls
+        
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - shell: bash
+        run: |
+          cd ..
           # TODO(replace ComfyUI-Mirror with ComfyUI)
           cp -r ComfyUI-Mirror ComfyUI_copy
           curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-${{ matrix.python_version }}-embed-amd64.zip -o python_embeded.zip
           unzip python_embeded.zip -d python_embeded
-          minor_version=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)
           cd python_embeded
           ls
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
