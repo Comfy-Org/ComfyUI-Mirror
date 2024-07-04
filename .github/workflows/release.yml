@@ -24,47 +24,33 @@ jobs:
           # Extract the minor version from the Python version
           MINOR_VERSION=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)
           echo "MINOR_VERSION=$MINOR_VERSION" >> $GITHUB_ENV
-      - uses: actions/cache/restore@v3
-        id: cache
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          path: |
-              cu${{ matrix.cuda_version }}_python_deps.tar
-              update_comfyui_and_python_dependencies.bat
-          key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ env.MINOR_VERSION }}
+          python-version: ${{ matrix.python_version }}
       - shell: bash
         run: |
-            mv cu${{ matrix.cuda_version }}_python_deps.tar ../
-            mv update_comfyui_and_python_dependencies.bat ../
-            cd ..
-            tar xf cu${{ matrix.cuda_version }}_python_deps.tar
-            pwd
-            ls
-      # - name: Setup Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: ${{ matrix.python_version }}
-      # - shell: bash
-      #   run: |
-      #     echo "@echo off
-      #     call update_comfyui.bat nopause
-      #     echo -
-      #     echo This will try to update pytorch and all python dependencies.
-      #     echo -
-      #     echo If you just want to update normally, close this and run update_comfyui.bat instead.
-      #     echo -
-      #     pause
-      #     ..\python_embeded\python.exe -s -m pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r ../ComfyUI/requirements.txt pygit2
-      #     pause" > update_comfyui_and_python_dependencies.bat
+          echo "@echo off
+          call update_comfyui.bat nopause
+          echo -
+          echo This will try to update pytorch and all python dependencies.
+          echo -
+          echo If you just want to update normally, close this and run update_comfyui.bat instead.
+          echo -
+          pause
+          ..\python_embeded\python.exe -s -m pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r ../ComfyUI/requirements.txt pygit2
+          pause" > update_comfyui_and_python_dependencies.bat
 
-      #     #python -m pip wheel --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r requirements.txt pygit2 -w ./temp_wheel_dir
-      #     #python -m pip install --no-cache-dir ./temp_wheel_dir/*
-      #     echo installed basic
-      #     #ls -lah temp_wheel_dir
-      #     #mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
-      #     #mv cu${{ matrix.cuda_version }}_python_deps ../
-      #     #mv update_comfyui_and_python_dependencies.bat ../
-      #     pwd
-      #     ls
+          python -m pip wheel --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r requirements.txt pygit2 -w ./temp_wheel_dir
+          python -m pip install --no-cache-dir ./temp_wheel_dir/*
+          echo installed basic
+          ls -lah temp_wheel_dir
+          mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
+          mv cu${{ matrix.cuda_version }}_python_deps ../
+          mv update_comfyui_and_python_dependencies.bat ../
+          cd ..
+          pwd
+          ls
         
       - uses: actions/checkout@v3
         with:
