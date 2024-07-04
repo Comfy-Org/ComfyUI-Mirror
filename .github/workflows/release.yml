@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         python_version: [3.11.8]
-        cuda_version: [118]
+        cuda_version: [121]
     steps:
       - name: Calculate Minor Version
         run: |
