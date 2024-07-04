@@ -63,7 +63,7 @@ jobs:
       #     pwd
       #     ls
         
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: false
