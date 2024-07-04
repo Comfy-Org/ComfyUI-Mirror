@@ -80,7 +80,7 @@ jobs:
           ls
           # TODO(replace ComfyUI-Mirror with ComfyUI)
           cp -r ComfyUI-Mirror ComfyUI_copy
-          curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-3.${{ env.MINOR_VERSION }}-embed-amd64.zip -o python_embeded.zip
+          curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-${{ matrix.python_version }}-embed-amd64.zip -o python_embeded.zip
           unzip python_embeded.zip -d python_embeded
           minor_version=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)
           cd python_embeded
