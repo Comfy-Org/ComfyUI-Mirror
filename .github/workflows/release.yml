@@ -75,7 +75,7 @@ jobs:
           curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-${{ matrix.python_version }}-embed-amd64.zip -o python_embeded.zip
           unzip python_embeded.zip -d python_embeded
           cd python_embeded
-          ls
+          echo ${{ env.MINOR_VERSION }}
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           ./python.exe get-pip.py
