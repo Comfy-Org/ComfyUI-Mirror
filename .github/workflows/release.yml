@@ -19,6 +19,7 @@ jobs:
         cuda_version: [121]
     steps:
       - name: Calculate Minor Version
+        shell: bash
         run: |
           # Extract the minor version from the Python version
           MINOR_VERSION=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)
