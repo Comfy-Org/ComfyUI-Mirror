@@ -21,6 +21,21 @@ jobs:
       - name: Calculate Minor Version
         run: |
           echo "MINOR_VERSION=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)" >> $GITHUB_ENV
+      - uses: actions/cache/restore@v3
+        id: cache
+        with:
+          path: |
+              cu${{ matrix.cuda_version }}_python_deps.tar
+              update_comfyui_and_python_dependencies.bat
+          key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ env.MINOR_VERSION }}
+      - shell: bash
+        run: |
+            mv cu${{ matrix.cuda_version }}_python_deps.tar ../
+            mv update_comfyui_and_python_dependencies.bat ../
+            cd ..
+            tar xf cu${{ matrix.cuda_version }}_python_deps.tar
+            pwd
+            ls
       # - name: Setup Python
       #   uses: actions/setup-python@v4
       #   with:
@@ -67,6 +82,9 @@ jobs:
           ./python.exe --version
           echo "Pip version:"
           ./python.exe -m pip --version
+
+          set PATH=$PWD/Scripts:$PATH
+          echo $PATH
           ./python.exe -s -m pip install ../cu${{ matrix.cuda_version }}_python_deps/*
           sed -i '1i../ComfyUI' ./python3${{ env.MINOR_VERSION }}._pth
           cd ..
