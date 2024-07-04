@@ -42,13 +42,13 @@ jobs:
           ..\python_embeded\python.exe -s -m pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r ../ComfyUI/requirements.txt pygit2
           pause" > update_comfyui_and_python_dependencies.bat
 
-          python -m pip wheel --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r requirements.txt pygit2 -w ./temp_wheel_dir
-          python -m pip install --no-cache-dir ./temp_wheel_dir/*
+          #python -m pip wheel --no-cache-dir torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu${{ matrix.cuda_version }} -r requirements.txt pygit2 -w ./temp_wheel_dir
+          #python -m pip install --no-cache-dir ./temp_wheel_dir/*
           echo installed basic
-          ls -lah temp_wheel_dir
-          mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
-          mv cu${{ matrix.cuda_version }}_python_deps ../
-          mv update_comfyui_and_python_dependencies.bat ../
+          #ls -lah temp_wheel_dir
+          #mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
+          #mv cu${{ matrix.cuda_version }}_python_deps ../
+          #mv update_comfyui_and_python_dependencies.bat ../
           cd ..
           pwd
           ls
@@ -62,6 +62,7 @@ jobs:
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
           export PATH=$PWD/Scripts:$PATH
           echo "Pip version:"
+          ./python.exe --version
           ./python.exe -m ensurepip
           ./python.exe -m pip --version
           ./python.exe -s -m pip install ../cu${{ matrix.cuda_version }}_python_deps/*
