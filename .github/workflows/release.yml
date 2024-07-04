@@ -27,22 +27,12 @@ jobs:
         run: |
           echo "MINOR_VERSION=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: |
-            cu${{ matrix.cuda_version }}_python_deps.tar
-            update_comfyui_and_python_dependencies.bat
-          key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ matrix.python_version }}
-          save-always: true
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
 
       - name: Update Windows Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
           echo "@echo off
@@ -61,14 +51,12 @@ jobs:
           echo installed basic
           ls -lah temp_wheel_dir
           mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
-          tar cf cu${{ matrix.cuda_version }}_python_deps.tar cu${{ matrix.cuda_version }}_python_deps
 
       - shell: bash
         run: |
-          mv cu${{ matrix.cuda_version }}_python_deps.tar ../
+          mv cu${{ matrix.cuda_version }}_python_deps ../
           mv update_comfyui_and_python_dependencies.bat ../
           cd ..
-          tar xf cu${{ matrix.cuda_version }}_python_deps.tar
           pwd
           ls
 
@@ -82,10 +70,10 @@ jobs:
           unzip python_embeded.zip -d python_embeded
           minor_version=$(echo "${{ matrix.python_version }}" | cut -d'.' -f2)
           cd python_embeded
+          ls
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           ./python.exe get-pip.py
-          export PATH=$PWD/Scripts:$PATH
           ./python.exe -s -m pip install ../cu${{ matrix.cuda_version }}_python_deps/*
           sed -i '1i../ComfyUI' ./python3${{ env.MINOR_VERSION }}._pth
           cd ..
