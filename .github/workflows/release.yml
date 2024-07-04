@@ -34,8 +34,6 @@ jobs:
             cu${{ matrix.cuda_version }}_python_deps.tar
             update_comfyui_and_python_dependencies.bat
           key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ matrix.python_version }}
-          restore-keys: |
-            ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ matrix.python_version }}
           save-always: true
 
       - name: Setup Python
@@ -64,13 +62,6 @@ jobs:
           ls -lah temp_wheel_dir
           mv temp_wheel_dir cu${{ matrix.cuda_version }}_python_deps
           tar cf cu${{ matrix.cuda_version }}_python_deps.tar cu${{ matrix.cuda_version }}_python_deps
-
-      - uses: actions/cache@v4
-        with:
-          path: |
-            cu${{ matrix.cuda_version }}_python_deps.tar
-            update_comfyui_and_python_dependencies.bat
-          key: ${{ runner.os }}-build-cu${{ matrix.cuda_version }}-${{ matrix.python_version }}
 
       - shell: bash
         run: |
