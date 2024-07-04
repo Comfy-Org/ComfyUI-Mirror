@@ -75,9 +75,7 @@ jobs:
       - name: Build ComfyUI
         shell: bash
         run: |
-          ls
           cd ..
-          ls
           # TODO(replace ComfyUI-Mirror with ComfyUI)
           cp -r ComfyUI-Mirror ComfyUI_copy
           curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-${{ matrix.python_version }}-embed-amd64.zip -o python_embeded.zip
@@ -87,6 +85,7 @@ jobs:
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           ./python.exe get-pip.py
+          export PATH=$PWD/Scripts:$PATH
           ./python.exe -s -m pip install ../cu${{ matrix.cuda_version }}_python_deps/*
           sed -i '1i../ComfyUI' ./python3${{ env.MINOR_VERSION }}._pth
           cd ..
