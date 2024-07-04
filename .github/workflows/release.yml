@@ -28,6 +28,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
+        
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - shell: bash
         run: |
           echo "@echo off
@@ -51,14 +56,6 @@ jobs:
           cd ..
           pwd
           ls
-        
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - shell: bash
-        run: |
-          cd ..
           # TODO(replace ComfyUI-Mirror with ComfyUI)
           cp -r ComfyUI-Mirror ComfyUI_copy
           curl https://www.python.org/ftp/python/${{ matrix.python_version }}/python-${{ matrix.python_version }}-embed-amd64.zip -o python_embeded.zip
