@@ -60,10 +60,9 @@ jobs:
           cd python_embeded
           ls
           echo 'import site' >> ./python3${{ env.MINOR_VERSION }}._pth
-          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-          ./python.exe get-pip.py
           export PATH=$PWD/Scripts:$PATH
           echo "Pip version:"
+          ./python.exe -m ensurepip
           ./python.exe -m pip --version
           ./python.exe -s -m pip install ../cu${{ matrix.cuda_version }}_python_deps/*
           sed -i '1i../ComfyUI' ./python3${{ env.MINOR_VERSION }}._pth
