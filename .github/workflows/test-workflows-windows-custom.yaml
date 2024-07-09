@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ inputs.runs_on }}
     steps:
     - name: Use ComfyUI GitHub Action
-      uses: comfy-org/comfy-action@main
+      uses: comfy-org/comfy-action@monkeytest
       with:
         os: windows
         cuda_version: 12.1
