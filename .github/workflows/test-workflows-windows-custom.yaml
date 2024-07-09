@@ -9,7 +9,7 @@ on:
 
 jobs:
   test-action:
-    runs-on: $INPUT_RUNS_ON
+    runs-on: ${{ inputs.runs_on }}
     steps:
     - name: Use ComfyUI GitHub Action
       uses: comfy-org/comfy-action@main
