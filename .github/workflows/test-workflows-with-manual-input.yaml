@@ -89,7 +89,7 @@ jobs:
     runs-on: ${{ inputs.runner_label }}
     steps:
     - name: Test Default Workflow
-      uses: drip-art/comfy-action@yo-migrate-value-from-comfyui
+      uses: comfy-org/comfy-action
       with:
         os: ${{ inputs.os }}
         python_version: ${{ (contains(inputs.python_version, "other") && inputs.python_version_number != '' ) && inputs.python_version_number || inputs.python_version}}

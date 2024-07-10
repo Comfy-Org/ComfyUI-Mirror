@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.runner_label }}
     steps:
       - name: Test Default Workflow
-        uses: drip-art/comfy-action@yo-migrate-value-from-comfyui
+        uses: comfy-org/comfy-action
         with:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}
