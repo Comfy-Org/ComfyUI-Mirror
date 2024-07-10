@@ -8,14 +8,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos]
-        python_version: [3.8, 3.11]
+        python_version: [3.8]
         torch_version: [12.1]
         runner_label: [dev-runner-yo]
-        include:
-          - os: macos
-            python_version: 3.8
-            torch_version: 12.1
-            runner_label: self-hosted, dev-runner-yo
+        # include:
+          # - os: macos
+          #   python_version: 3.8
+          #   torch_version: 12.1
+          #   runner_label: self-hosted, dev-runner-yo
           # - os: linux
           #   python_version: 3.8
           #   torch_version: 12.1
