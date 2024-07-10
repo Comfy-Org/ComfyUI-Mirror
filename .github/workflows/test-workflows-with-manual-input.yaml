@@ -57,7 +57,7 @@ on:
       comfyui_flags:
         description: 'ComfyUI Flags'
         required: false
-        default: ''
+        default: '--force-fp16'
         type: string
       workflow_filenames:
         description: 'Workflow Filenames'

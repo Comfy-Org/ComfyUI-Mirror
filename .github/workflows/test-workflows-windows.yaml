@@ -16,6 +16,7 @@ jobs:
         os: windows
         cuda_version: 12.1
         gcs_bucket_name: 'comfy-ci-results'
+        workflow_filenames: "default.json,lora.json"
         google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
         output_prefix: 'ComfyUI'
         timeout: 50

@@ -10,7 +10,7 @@ jobs:
         os: [macos]
         python_version: [3.8]
         torch_version: [12.1]
-        runner_label: [dev-runner-yo]
+        runner_label: [self-hosted]
         # include:
           # - os: macos
           #   python_version: 3.8
