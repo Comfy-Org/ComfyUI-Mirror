@@ -6,13 +6,11 @@ on:
         description: 'Operating System'
         required: true
         default: 'macos'
+        type: choice
         options:
-          macos:
-            description: 'macOS'
-          linux:
-            description: 'Linux'
-          win:
-            description: 'Windows'
+        - macos
+        - linux
+        - win
       runner_label:
         description: 'Runner Label'
         required: false
@@ -22,43 +20,35 @@ on:
         description: 'Python Version'
         required: true
         default: '3.9'
+        type: choice
         options:
-          3.8:
-            description: '3.8'
-          3.9:
-            description: '3.9'
-          3.10:
-            description: '3.10'
-          3.11:
-            description: '3.11'
-          3.12:
-            description: '3.12'
-          other:
-            description: 'Other (specify below)'
+        - '3.8'
+        - '3.9'
+        - '3.10'
+        - '3.11'
+        - '3.12'
+        - other
       python_version_number:
         description: 'Specify your own Python Version Number, e.g. 3.9.12'
         required: false
         default: '3.9'
-        type: string 
+        type: string
       cuda_version:
         description: 'CUDA Version, currently only 12.1 is supported'
         required: true
         default: '12.1'
+        type: choice
         options:
-          12.1:
-            description: '12.1'
+        - '12.1'
       torch_version:
         description: 'Torch Version'
         required: true
         default: 'stable'
         type: choice
         options:
-          stable:
-            description: 'Stable'
-          preview:
-            description: 'Preview'
-          other:
-            description: 'Other (specify below)'
+        - stable
+        - preview
+        - other
       torch_version_number:
         description: 'Torch Version Number'
         required: false
