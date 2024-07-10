@@ -1,4 +1,4 @@
-name: Test ComfyUI Example Workflows
+name: Test ComfyUI Example Workflows (Yoland)
 on:
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.runner_label }}
     steps:
       - name: Test Default Workflow
-        uses: comfy-org/comfy-action
+        uses: comfy-org/comfy-action@main
         with:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}

@@ -89,7 +89,7 @@ jobs:
     runs-on: ${{ inputs.runner_label }}
     steps:
     - name: Test Default Workflow
-      uses: comfy-org/comfy-action
+      uses: comfy-org/comfy-action@main
       with:
         os: ${{ inputs.os }}
         python_version: ${{ (contains(inputs.python_version, "other") && inputs.python_version_number != '' ) && inputs.python_version_number || inputs.python_version}}
