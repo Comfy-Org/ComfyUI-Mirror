@@ -1,4 +1,4 @@
-name: Test ComfyUI Example Workflows (Yoland)
+name: Comfy CI Workflows Run
 on:
   workflow_dispatch:
 
