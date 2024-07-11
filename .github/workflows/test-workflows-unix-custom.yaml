@@ -7,14 +7,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos, linux]
-        python_version: [3.9]
+        os: [macos, linux, win]
+        python_version: [3.9, 3.10, 3.11, 3.12]
         torch_version: [12.1]
         include:
           - os: macos
             runner_label: [self-hosted, macOS, m2]
           - os: linux
             runner_label: [self-hosted, Linux, t4]
+          - os: win
+            runner_label: [self-hosted, win]
           # - os: win
           #   python_version: 3.8
           #   torch_version: 12.1
@@ -22,7 +24,7 @@ jobs:
     runs-on: ${{ matrix.runner_label }}
     steps:
       - name: Test Default Workflow
-        uses: comfy-org/comfy-action@main
+        uses: comfy-org/comfy-action@skip
         with:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}
