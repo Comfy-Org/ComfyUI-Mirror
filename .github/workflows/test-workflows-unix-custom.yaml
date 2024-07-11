@@ -3,20 +3,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-default-workflow:
+  test-stable:
     strategy:
       fail-fast: false
       matrix:
         os: [macos, linux, win]
         python_version: [3.9, 3.10, 3.11, 3.12]
-        torch_version: [12.1]
-        exclude:
-          - os: macos
-            python_version: 3.10
-          - os: macos
-            python_version: 3.11
-          - os: linux
-            python_version: [3.10, 3.11]
+        cuda_version: [12.1]
+        torch_version: ["stable"]
         include:
           - os: macos
             runner_label: [self-hosted, macOS, m2]
@@ -24,20 +18,72 @@ jobs:
             runner_label: [self-hosted, Linux, t4]
           - os: win
             runner_label: [self-hosted, win]
-          # - os: win
-          #   python_version: 3.8
-          #   torch_version: 12.1
-          #   runner_label: self-hosted, win
     runs-on: ${{ matrix.runner_label }}
     steps:
-      - name: Test Default Workflow
+      - name: Test Workflows
         uses: comfy-org/comfy-action@skip
         with:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}
           torch_version: ${{ matrix.torch_version }}
-          workflow_filenames: "default.json,lora.json"
+          workflow_filenames: "default.json,lora.json,sd3_default.json"
           google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
           comfyui_flags: ""
           output_prefix: 'ComfyUI'
           timeout: 50
+  test-win-nightly:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [win]
+        python_version: [3.9, 3.10, 3.11, 3.12]
+        cuda_version: [12.1]
+        torch_version: ["nightly"]
+        runner_label: [self-hosted, win]
+        include:
+          - os: mac
+            python_version: 3.11
+            runner_label: [self-hosted, macOS, m2]
+          - os: linux
+            python_version: 3.11
+            runner_label: [self-hosted, Linux, t4]
+        # runner_label: [self-hosted, win, cu121] # Enable this after we set up CUDA 12.4 machine
+    runs-on: ${{ matrix.runner_label }}
+    steps:
+      - name: Test Workflows
+        uses: comfy-org/comfy-action@skip
+        with:
+          os: ${{ matrix.os }}
+          python_version: ${{ matrix.python_version }}
+          torch_version: ${{ matrix.torch_version }}
+          workflow_filenames: "default.json,lora.json,sd3_default.json"
+          google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+          comfyui_flags: ""
+          output_prefix: 'ComfyUI'
+          timeout: 50
+  # Enable this after we set up CUDA 12.4 machine
+  # test-linux-nightly:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [win]
+  #       python_version: [3.9, 3.10, 3.11, 3.12]
+  #       cuda_version: [12.4]
+  #       torch_version: ["nightly"]
+  #       include:
+  #         - os: win
+  #           runner_label: [self-hosted, win, cu124]
+  #   runs-on: ${{ matrix.runner_label }}
+  #   steps:
+  #     - name: Test Default Workflow
+  #       uses: comfy-org/comfy-action@skip
+  #       with:
+  #         os: ${{ matrix.os }}
+  #         python_version: ${{ matrix.python_version }}
+  #         torch_version: ${{ matrix.torch_version }}
+  #         workflow_filenames: "default.json,lora.json,sd3_default.json"
+  #         google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+  #         comfyui_flags: ""
+  #         output_prefix: 'ComfyUI'
+  #         timeout: 50
+  
