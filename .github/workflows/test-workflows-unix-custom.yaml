@@ -12,9 +12,9 @@ jobs:
         torch_version: [12.1]
         include:
           - os: macos
-            runner_label: self-hosted, macOS, m2
+            runner_label: [self-hosted, macOS, m2]
           - os: linux
-            runner_label: self-hosted, Linux, t4
+            runner_label: [self-hosted, Linux, t4]
           # - os: win
           #   python_version: 3.8
           #   torch_version: 12.1
