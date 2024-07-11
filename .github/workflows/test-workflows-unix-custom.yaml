@@ -7,8 +7,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos]
-        python_version: [3.8]
+        os: [macos, linux]
+        python_version: [3.9]
         torch_version: [12.1]
         runner_label: [self-hosted]
         # include:
