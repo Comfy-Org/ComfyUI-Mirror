@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos, linux, win]
+        os: [macos, linux, windows]
         python_version: ["3.9", "3.10", "3.11", "3.12"]
         cuda_version: ["12.1"]
         torch_version: ["stable"]
@@ -16,7 +16,7 @@ jobs:
             runner_label: [self-hosted, macOS, m2]
           - os: linux
             runner_label: [self-hosted, Linux, t4]
-          - os: win
+          - os: windows
             runner_label: [self-hosted, win]
     runs-on: ${{ matrix.runner_label }}
     steps:
@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [win]
+        os: [windows]
         python_version: ["3.9", "3.10", "3.11", "3.12"]
         cuda_version: ["12.1"]
         torch_version: ["nightly"]
@@ -66,12 +66,12 @@ jobs:
   #   strategy:
   #     fail-fast: false
   #     matrix:
-  #       os: [win]
+  #       os: [windows]
   #       python_version: ["3.9", "3.10", "3.11", "3.12"]
   #       cuda_version: ["12.4"]
   #       torch_version: ["nightly"]
   #       include:
-  #         - os: win
+  #         - os: windows
   #           runner_label: [self-hosted, win, cu124]
   #   runs-on: ${{ matrix.runner_label }}
   #   steps:
