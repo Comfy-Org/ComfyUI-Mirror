@@ -21,4 +21,4 @@ jobs:
         google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
         output_prefix: 'ComfyUI'
         timeout: 50
-        api_endpoint: http://localhost:8080/upload-artifact
+        # api_endpoint: http://localhost:8080/upload-artifact
