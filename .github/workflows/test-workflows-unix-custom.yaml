@@ -13,10 +13,14 @@ jobs:
         torch_version: ["stable"]
         include:
           - os: macos
+            workflow_filenames: "default.json,lora.json,sd3_default.json"
             runner_label: [self-hosted, macOS, m2]
           - os: linux
+            workflow_filenames: "default.json,lora.json,sd3_default.json"
             runner_label: [self-hosted, Linux, t4]
           - os: windows
+            # Use only single t5 run for windows given our win runner is too trash
+            workflow_filenames: "default.json,lora.json,sd3-single-t5.json"
             runner_label: [self-hosted, win]
     runs-on: ${{ matrix.runner_label }}
     steps:
@@ -26,7 +30,7 @@ jobs:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}
           torch_version: ${{ matrix.torch_version }}
-          workflow_filenames: "default.json,lora.json,sd3_default.json"
+          workflow_filenames: ${{ matrix.workflow_filenames }}
           google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
           comfyui_flags: ""
           output_prefix: 'ComfyUI'
@@ -51,7 +55,8 @@ jobs:
           os: ${{ matrix.os }}
           python_version: ${{ matrix.python_version }}
           torch_version: ${{ matrix.torch_version }}
-          workflow_filenames: "default.json,lora.json,sd3_default.json"
+          # Use only single t5 run for windows given our win runner is too trash
+          workflow_filenames: "default.json,lora.json,sd3-single-t5.json"
           google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
           comfyui_flags: ""
           output_prefix: 'ComfyUI'
