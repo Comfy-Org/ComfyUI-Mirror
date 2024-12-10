@@ -1,0 +1,105 @@
+name: Comfy CI Workflows Run
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'app/**'
+      - 'input/**'
+      - 'output/**'
+      - 'model/**'
+      - 'notebook/**'
+      - 'script_example/**'
+      - 'tests/**'
+      - 'tests-ui/**'
+      - '.github/**'
+      - '.ci/**'
+      - 'web/**'
+  workflow_dispatch:
+
+jobs:
+  test-stable:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos, linux, windows]
+        python_version: ["3.9", "3.10", "3.11", "3.12"]
+        cuda_version: ["12.1"]
+        torch_version: ["stable"]
+        include:
+          - os: macos
+            runner_label: [self-hosted, macOS, m2]
+            flags: "--use-pytorch-cross-attention"
+          - os: linux
+            runner_label: [self-hosted, Linux, t4]
+            flags: ""
+          - os: windows
+            runner_label: [self-hosted, win]
+            flags: ""
+    runs-on: ${{ matrix.runner_label }}
+    steps:
+      - name: Test Workflows
+        uses: comfy-org/comfy-action@main
+        with:
+          os: ${{ matrix.os }}
+          python_version: ${{ matrix.python_version }}
+          torch_version: ${{ matrix.torch_version }}
+          google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+          comfyui_flags: ${{ matrix.flags }}
+          output_prefix: 'ComfyUI'
+          timeout: 50
+          use_prior_commit: 'true'
+  test-win-nightly:
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [windows]
+        python_version: ["3.9", "3.10", "3.11", "3.12"]
+        cuda_version: ["12.1"]
+        torch_version: ["nightly"]
+        include:
+          - os: windows
+            runner_label: [self-hosted, win]
+            flags: ""
+    runs-on: ${{ matrix.runner_label }}
+    steps:
+      - name: Test Workflows
+        uses: comfy-org/comfy-action@main
+        with:
+          os: ${{ matrix.os }}
+          python_version: ${{ matrix.python_version }}
+          torch_version: ${{ matrix.torch_version }}
+          google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+          comfyui_flags: ${{ matrix.flags }}
+          output_prefix: 'ComfyUI'
+          timeout: 50
+          use_prior_commit: 'true'
+  test-unix-nightly:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos, linux]
+        python_version: ["3.11"]
+        cuda_version: ["12.1"]
+        torch_version: ["nightly"]
+        include:
+          - os: macos
+            runner_label: [self-hosted, macOS, m2]
+            flags: "--use-pytorch-cross-attention"
+          - os: linux
+            runner_label: [self-hosted, Linux, t4]
+            flags: ""
+
+    runs-on: ${{ matrix.runner_label }}
+    steps:
+      - name: Test Workflows
+        uses: comfy-org/comfy-action@main
+        with:
+          os: ${{ matrix.os }}
+          python_version: ${{ matrix.python_version }}
+          torch_version: ${{ matrix.torch_version }}
+          google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+          comfyui_flags: ${{ matrix.flags }}
+          output_prefix: 'ComfyUI'
+          timeout: 50
+          use_prior_commit: 'true'
