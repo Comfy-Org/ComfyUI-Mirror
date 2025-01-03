@@ -1,0 +1,24 @@
+name: Use Custom Runner Target To Test ComfyUI Windows with Default Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      runs_on:
+        description: 'What runners to run this test on'
+        required: false
+        default: 'win'
+
+jobs:
+  test-action:
+    runs-on: ${{ inputs.runs_on }}
+    steps:
+    - name: Use ComfyUI GitHub Action
+      uses: comfy-org/comfy-action@monkeytest
+      with:
+        os: windows
+        cuda_version: 12.1
+        workflow_filenames: 'default.json'
+        gcs_bucket_name: 'comfy-ci-results'
+        google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+        output_prefix: 'ComfyUI'
+        timeout: 50
+        # api_endpoint: http://localhost:8080/upload-artifact
