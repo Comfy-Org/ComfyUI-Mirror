@@ -1,0 +1,10 @@
+{
+  "workbench.colorCustomizations": {
+    "inlineChat.background": "#FFFFFF",
+    "inlineChatInput.background": "#FFFFFF",
+    "inlineChatInput.focusBorder": "#EFEFEF",
+    "inlineChat.regionHighlight": "#F0F0F0",
+    "titleBar.activeBackground": "#0D4A23",
+    "titleBar.activeForeground": "#F2FCF5"
+  }
+}
