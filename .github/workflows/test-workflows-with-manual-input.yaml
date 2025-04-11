@@ -1,0 +1,91 @@
+name: Test ComfyUI Workflows Manual
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'Operating System'
+        required: true
+        default: 'macos'
+        type: choice
+        options:
+        - macos
+        - linux
+        - win
+      runner_label:
+        description: 'Runner Label'
+        required: false
+        default: 'self-hosted'
+        type: string
+      python_version:
+        description: 'Python Version'
+        required: true
+        default: '3.9'
+        type: choice
+        options:
+        - '3.8'
+        - '3.9'
+        - '3.10'
+        - '3.11'
+        - '3.12'
+        - other
+      python_version_number:
+        description: 'Specify your own Python Version Number, e.g. 3.9.12'
+        required: false
+        default: '3.9'
+        type: string
+      cuda_version:
+        description: 'CUDA Version, currently only 12.1 is supported'
+        required: true
+        default: '12.1'
+        type: choice
+        options:
+        - '12.1'
+      torch_version:
+        description: 'Torch Version'
+        required: true
+        default: 'stable'
+        type: choice
+        options:
+        - stable
+        - preview
+        - other
+      torch_version_number:
+        description: 'Torch Version Number'
+        required: false
+        default: '2.3.1'
+        type: string
+      comfyui_flags:
+        description: 'ComfyUI Flags'
+        required: false
+        default: '--force-fp16'
+        type: string
+      workflow_filenames:
+        description: 'Workflow Filenames'
+        required: false
+        default: 'default.json,lora.json'
+        type: string
+      workflow_raw_json:
+        description: 'Workflow Raw JSON (Not yet supported)'
+        required: false
+        default: ''
+        type: string
+
+      
+
+
+
+jobs:
+  test-default-workflow:
+    runs-on: ${{ inputs.runner_label }}
+    steps:
+    - name: Test Default Workflow
+      uses: comfy-org/comfy-action@main
+      with:
+        os: ${{ inputs.os }}
+        python_version: ${{ (contains(inputs.python_version, "other") && inputs.python_version_number != '' ) && inputs.python_version_number || inputs.python_version}}
+        cuda_version: ${{ inputs.cuda_version }}
+        torch_version: ${{ (contains(inputs.torch_version, "other") && inputs.torch_version_number != '' ) && inputs.torch_version_number || inputs.torch_version}}
+        workflow_filenames: "default.json,lora.json"
+        workflow_raw_json: ${{ inputs.workflow_raw_json }}
+        google_credentials: ${{ secrets.GCS_SERVICE_ACCOUNT_JSON }}
+        timeout: 50
